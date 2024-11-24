@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script
+            src="https://unpkg.com/htmx.org@2.0.3"
+            integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq"
+            crossorigin="anonymous"
+    ></script>
+
+    <script src="https://unpkg.com/htmx-ext-ws@2.0.1/ws.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div class="p-5 text-center font-bold">Chat</div>
+    <div hx-ext="ws" ws-connect="/ws">
+        <div class="flex bg-gray-100 p-4">
+            <ul id="chat_room" hx-swap="beforeend" hx-swap-oob="beforeend"></ul>
+        </div>
+
+        <form id="form" ws-send>
+            <input type="text" name="text" class="border-2 border-gray-300 p-2" placeholder="Type your message" />
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2">Send</button>
+        </form>
+    </div>
+</body>
+</html>
