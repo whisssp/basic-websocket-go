@@ -40,13 +40,7 @@ func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = r.ParseForm()
-	if err != nil {
-		http.Error(w, "Unable to parse form", http.StatusBadRequest)
-		return
-	}
-
-	id := r.Form.Get("ID")
+	id := r.URL.Query().Get("clientID")
 
 	client := &Client{
 		ID:   id,
@@ -94,7 +88,7 @@ func (c *Client) writePump() {
 		}
 
 		c.hub.broadcast <- &Message{
-			ClientID: msg.ID,
+			ClientID: c.ID,
 			Text:     msg.Text,
 		}
 	}
