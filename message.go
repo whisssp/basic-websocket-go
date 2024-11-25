@@ -6,6 +6,7 @@ type Message struct {
 }
 
 type WSMessage struct {
+	ID      string      `json:"id"`
 	Text    string      `json:"text"`
 	Headers interface{} `json:"headers"`
 }

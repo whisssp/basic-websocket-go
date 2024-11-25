@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
@@ -41,10 +40,16 @@ func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id := uuid.New()
+	err = r.ParseForm()
+	if err != nil {
+		http.Error(w, "Unable to parse form", http.StatusBadRequest)
+		return
+	}
+
+	id := r.Form.Get("ID")
 
 	client := &Client{
-		ID:   id.String(),
+		ID:   id,
 		hub:  hub,
 		conn: conn,
 		send: make(chan []byte),
@@ -89,7 +94,7 @@ func (c *Client) writePump() {
 		}
 
 		c.hub.broadcast <- &Message{
-			ClientID: c.ID,
+			ClientID: msg.ID,
 			Text:     msg.Text,
 		}
 	}
